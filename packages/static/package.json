@@ -5,7 +5,7 @@
     "license": "MIT",
     "scripts": {
         "watch": "rollup -cw",
-        "now-build": "NODE_ENV=production rollup -c"
+        "now-build": "NODE_ENV=production yarn --cwd ../.. run build-all && rollup -c"
     },
     "devDependencies": {
         "autoprefixer": "^9.5.1",

@@ -7,8 +7,8 @@
     "license": "MIT",
     "scripts": {
         "watch": "serve & lerna run --parallel watch",
-        "now-build": "NODE_ENV=production lerna link && yarn workspace @githtml/util run now-build && yarn workspace @githtml/static run now-build",
-        "now-build-all": "NODE_ENV=production lerna link && lerna run --parallel now-build"
+        "build-all": "NODE_ENV=production lerna link && lerna run --parallel build",
+        "now-build": "NODE_ENV=production lerna link && yarn workspace @githtml/util run now-build && yarn workspace @githtml/static run now-build"
     },
     "devDependencies": {
         "clear-module": "^3.2.0",
@@ -19,6 +19,8 @@
         "prettier": "^1.17.0",
         "rollup": "^1.11.2",
         "rollup-plugin-buble": "^0.19.6",
+        "rollup-plugin-commonjs": "^9.3.4",
+        "rollup-plugin-node-resolve": "^4.2.3",
         "rollup-plugin-replace": "^2.2.0",
         "serve": "^11.0.0",
         "serve-proxied": "^11.0.0-3"

@@ -5,7 +5,7 @@
     "license": "MIT",
     "scripts": {
         "watch": "node ../../watcher.js 3337",
-        "now-build": "NODE_ENV=production yarn --cwd ../.. run now-build-all && rollup -c"
+        "now-build": "NODE_ENV=production yarn --cwd ../.. run build-all && rollup -c"
     },
     "dependencies": {
         "@githtml/util": "1.0.0",

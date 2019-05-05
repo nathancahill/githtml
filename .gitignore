@@ -1,2 +1,4 @@
 .DS_Store
 node_modules/
+packages/util/lib/
+public/static/js/
