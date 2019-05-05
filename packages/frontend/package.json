@@ -4,8 +4,8 @@
     "main": "index.js",
     "license": "MIT",
     "scripts": {
-        "watch": "sleep 5 && node ../../watcher.js 3337",
-        "now-build": "NODE_ENV=production yarn workspace @githtml/util install && yarn workspace @githtml/util run now-build && rollup -c"
+        "watch": "node ../../watcher.js 3337",
+        "now-build": "NODE_ENV=production yarn --cwd ../.. run now-build-all && rollup -c"
     },
     "dependencies": {
         "@githtml/util": "1.0.0",
