@@ -2,5 +2,5 @@ import base from '../../rollup.api.config.js'
 
 export default {
     ...base,
-    external: ['@google-cloud/storage', 'micro'],
+    external: ['@google-cloud/storage', 'micro', 'url', 'crypto'],
 }
