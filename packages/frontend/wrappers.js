@@ -1,9 +1,9 @@
-export const authenticatedWrapper = (title, html) => `
+export const authenticatedWrapper = (options, html) => `
 <!DOCTYPE html>
 <html>
 <head>
-    <title>${title}</title>
-    <link rel="stylesheet" type="text/css" href="https://unpkg.com/github-syntax-light@0.5.0/lib/github-light.css" />
+    <title>${options.title}</title>
+    <link rel="stylesheet" type="text/css" href="${options.stylesheet}" />
 </head>
 <body>
 ${html}
@@ -12,17 +12,17 @@ ${html}
 </html>
 `
 
-export const anonymousWrapper = (title, injected, html) => `
+export const anonymousWrapper = (options, html) => `
 <!DOCTYPE html>
 <html>
 <head>
-    <title>${title}</title>
-    <link rel="stylesheet" type="text/css" href="https://unpkg.com/github-syntax-light@0.5.0/lib/github-light.css" />
+    <title>${options.title}</title>
+    <link rel="stylesheet" type="text/css" href="${options.stylesheet}" />
 </head>
 <body>
 ${html}
 <script type="text/javascript">
-var urlParts = ${injected};
+var urlParts = ${options.urlParts};
 </script>
 <script type="text/javascript" src="/static/js/app.js"></script>
 <script type="text/javascript" src="/static/js/client.js"></script>

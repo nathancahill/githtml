@@ -41,7 +41,13 @@ export default async (req, res) => {
         }
 
         return authenticatedWrapper(
-            `GitHtml`,
+            {
+                title: 'GitHtml',
+                stylesheet:
+                    query.mode === 'dark'
+                        ? 'https://unpkg.com/github-syntax-dark@0.5.0/lib/github-dark.css'
+                        : 'https://unpkg.com/github-syntax-light@0.5.0/lib/github-light.css',
+            },
             render(
                 <div class="font-body">
                     <Header />
@@ -60,13 +66,13 @@ export default async (req, res) => {
     //          return with client-side functions
     if (!req.apikey) {
         return anonymousWrapper(
-            `GitHtml`,
-            JSON.stringify({
-                repo: urlParts.repo,
-                branch: urlParts.branch,
-                blob: urlParts.blob,
-                filepath: urlParts.filepath,
-            }),
+            {
+                title: 'GitHtml',
+                stylesheet:
+                    query.mode === 'dark'
+                        ? 'https://unpkg.com/github-syntax-dark@0.5.0/lib/github-dark.css'
+                        : 'https://unpkg.com/github-syntax-light@0.5.0/lib/github-light.css',
+            },
             render(
                 <div class="font-body">
                     <Header />
@@ -105,7 +111,13 @@ ${content}
 
     // return html
     return authenticatedWrapper(
-        `GitHtml`,
+        {
+            title: 'GitHtml',
+            stylesheet:
+                query.mode === 'dark'
+                    ? 'https://unpkg.com/github-syntax-dark@0.5.0/lib/github-dark.css'
+                    : 'https://unpkg.com/github-syntax-light@0.5.0/lib/github-light.css',
+        },
         render(
             <div class="font-body">
                 <Header />

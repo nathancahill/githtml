@@ -30,8 +30,13 @@ export default async (req, res) => {
         }
 
         const file = bucket.file(query.path)
-        let output
+        const exists = await file.exists()
 
+        if (!exists) {
+            throw createError(404, 'Not Found')
+        }
+
+        let output
         try {
             output = await new Promise((resolve, reject) => {
                 const stream = file.createReadStream()
@@ -59,6 +64,11 @@ export default async (req, res) => {
     }
 
     const file = bucket.file(obj.path)
+    const exists = await file.exists()
+
+    if (exists) {
+        return { sucess: true }
+    }
 
     try {
         await new Promise((resolve, reject) => {
