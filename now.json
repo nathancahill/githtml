@@ -29,7 +29,7 @@
             "dest": "packages/cache"
         },
         {
-            "src": "/static/**",
+            "src": "/static/.*",
             "dest": "package.json"
         },
         {
