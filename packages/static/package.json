@@ -5,10 +5,12 @@
     "license": "MIT",
     "scripts": {
         "watch": "rollup -cw",
-        "now-build": "rollup -c"
+        "now-build": "NODE_ENV=production rollup -c"
     },
     "devDependencies": {
         "autoprefixer": "^9.5.1",
+        "postcss-purgecss": "^1.0.0",
+        "rollup-plugin-commonjs": "^9.3.4",
         "rollup-plugin-node-builtins": "^2.1.2",
         "rollup-plugin-node-globals": "^1.4.0",
         "rollup-plugin-node-resolve": "^4.2.3",
@@ -17,10 +19,6 @@
         "tailwindcss": "^1.0.0-beta.8"
     },
     "dependencies": {
-        "@githtml/util": "1.0.0",
-        "postcss-purgecss": "^1.0.0",
-        "rollup-plugin-commonjs": "^9.3.4",
-        "typography": "^0.16.19",
-        "typography-theme-github": "^0.16.19"
+        "@githtml/util": "1.0.0"
     }
 }

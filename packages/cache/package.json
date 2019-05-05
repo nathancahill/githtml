@@ -5,7 +5,7 @@
     "license": "MIT",
     "scripts": {
         "watch": "node ../../watcher.js 3338",
-        "now-build": "rollup -c"
+        "now-build": "NODE_ENV=production rollup -c"
     },
     "dependencies": {
         "@githtml/auth": "1.0.0",

@@ -29,7 +29,7 @@
             "dest": "packages/cache"
         },
         {
-            "src": "/",
+            "src": "!/static/**",
             "dest": "packages/frontend"
         }
     ],
