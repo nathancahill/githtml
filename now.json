@@ -31,7 +31,7 @@
         {
             "src": "/static/**",
             "dest": "package.json"
-        }
+        },
         {
             "src": "/.*",
             "dest": "packages/frontend"
