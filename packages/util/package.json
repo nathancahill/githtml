@@ -4,7 +4,8 @@
     "main": "lib/index.js",
     "license": "MIT",
     "scripts": {
-        "watch": "rollup -cw"
+        "watch": "rollup -cw",
+        "now-build": "NODE_ENV=production rollup -c"
     },
     "dependencies": {
         "parse-github-url": "^1.0.2"
