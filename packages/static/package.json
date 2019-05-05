@@ -1,0 +1,26 @@
+{
+    "name": "@githtml/static",
+    "version": "1.0.0",
+    "main": "index.js",
+    "license": "MIT",
+    "scripts": {
+        "watch": "rollup -cw",
+        "now-build": "rollup -c"
+    },
+    "devDependencies": {
+        "autoprefixer": "^9.5.1",
+        "rollup-plugin-node-builtins": "^2.1.2",
+        "rollup-plugin-node-globals": "^1.4.0",
+        "rollup-plugin-node-resolve": "^4.2.3",
+        "rollup-plugin-postcss": "^2.0.3",
+        "rollup-plugin-uglify": "^6.0.2",
+        "tailwindcss": "^1.0.0-beta.8"
+    },
+    "dependencies": {
+        "@githtml/util": "1.0.0",
+        "postcss-purgecss": "^1.0.0",
+        "rollup-plugin-commonjs": "^9.3.4",
+        "typography": "^0.16.19",
+        "typography-theme-github": "^0.16.19"
+    }
+}

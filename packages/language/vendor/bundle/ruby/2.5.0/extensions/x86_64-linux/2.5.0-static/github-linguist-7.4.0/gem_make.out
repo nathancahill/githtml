@@ -1,0 +1,17 @@
+current directory: /var/gem_build/vendor/bundle/ruby/2.5.0/gems/github-linguist-7.4.0/ext/linguist
+/var/lang/bin/ruby -I /var/lang/lib/ruby/site_ruby/2.5.0 -r ./siteconf20190504-1-1nd2maj.rb extconf.rb
+creating Makefile
+
+current directory: /var/gem_build/vendor/bundle/ruby/2.5.0/gems/github-linguist-7.4.0/ext/linguist
+make "DESTDIR=" clean
+
+current directory: /var/gem_build/vendor/bundle/ruby/2.5.0/gems/github-linguist-7.4.0/ext/linguist
+make "DESTDIR="
+compiling lex.linguist_yy.c
+compiling linguist.c
+compiling strndup.c
+linking shared-object linguist/linguist.so
+
+current directory: /var/gem_build/vendor/bundle/ruby/2.5.0/gems/github-linguist-7.4.0/ext/linguist
+make "DESTDIR=" install
+/usr/bin/install -c -m 0755 linguist.so ./.gem.20190504-1-1f80ivi/linguist

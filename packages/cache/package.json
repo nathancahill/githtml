@@ -1,0 +1,14 @@
+{
+    "name": "@githtml/cache",
+    "version": "1.0.0",
+    "main": "index.js",
+    "license": "MIT",
+    "scripts": {
+        "watch": "node ../../watcher.js 3338",
+        "now-build": "rollup -c"
+    },
+    "dependencies": {
+        "@githtml/auth": "1.0.0",
+        "@google-cloud/storage": "^2.5.0"
+    }
+}

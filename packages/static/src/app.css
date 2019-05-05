@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+pre,
+code {
+    line-height: 20px;
+}
+
+.highlight pre {
+    counter-reset: line;
+}
+
+.highlight pre code {
+    counter-increment: line;
+}
+
+.highlight pre code:before {
+    content: counter(line);
+    color: rgba(27, 31, 35, 0.3);
+    display: inline-block;
+    width: 50px;
+    padding-left: 10px;
+    padding-right: 10px;
+    text-align: right;
+    user-select: none;
+    white-space: nowrap;
+}
+
+.highlight pre code:hover:before {
+    color: rgba(27, 31, 35, 0.6);
+}

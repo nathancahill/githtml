@@ -1,0 +1,8 @@
+{
+    "name": "@githtml/language",
+    "version": "1.0.0",
+    "license": "MIT",
+    "scripts": {
+        "watch": "ruby index.rb"
+    }
+}

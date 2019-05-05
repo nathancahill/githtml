@@ -1,0 +1,32 @@
+{
+    "name": "githtml",
+    "version": "1.0.0",
+    "private": true,
+    "repository": "git@github.com:nathancahill/githtml.git",
+    "author": "Nathan Cahill <nathan@nathancahill.com>",
+    "license": "MIT",
+    "scripts": {
+        "watch": "serve & lerna run --parallel watch",
+        "now-build": "NODE_ENV=production lerna link && yarn workspace @githtml/static run now-build"
+    },
+    "devDependencies": {
+        "clear-module": "^3.2.0",
+        "lerna": "^3.13.4",
+        "micro": "^9.3.4",
+        "now": "^15.1.0",
+        "now-node-workspaces": "^0.5.4-canary.5",
+        "prettier": "^1.17.0",
+        "rollup": "^1.11.2",
+        "rollup-plugin-buble": "^0.19.6",
+        "rollup-plugin-replace": "^2.2.0",
+        "serve": "^11.0.0",
+        "serve-proxied": "^11.0.0-3"
+    },
+    "workspaces": [
+        "packages/*"
+    ],
+    "dependencies": {
+        "isomorphic-fetch": "^2.2.1",
+        "lodash": "^4.17.11"
+    }
+}

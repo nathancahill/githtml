@@ -1,0 +1,39 @@
+{
+    "version": 2,
+    "alias": "githtml.com",
+    "regions": ["iad1"],
+    "builds": [
+        {
+            "src": "package.json",
+            "use": "now-static-build-workspace",
+            "config": { "includeWorkspace": true, "distDir": "public" }
+        },
+        {
+            "src": "packages/@(frontend|cache)/index.js",
+            "use": "now-node-workspaces",
+            "config": { "includeWorkspace": true, "maxLambdaSize": "15mb" }
+        },
+        {
+            "src": "packages/language/index.rb",
+            "use": "now-builder-ruby",
+            "config": { "include": "packages/language/**", "exclude": "**" }
+        }
+    ],
+    "routes": [
+        {
+            "src": "/api/language",
+            "dest": "packages/language"
+        },
+        {
+            "src": "/api/cache",
+            "dest": "packages/cache"
+        },
+        {
+            "src": "/",
+            "dest": "packages/frontend"
+        }
+    ],
+    "env": {
+        "ENCRYPT_KEY": "@githtml-encrypt-key"
+    }
+}
