@@ -7,7 +7,7 @@
     "license": "MIT",
     "scripts": {
         "watch": "serve & lerna run --parallel watch",
-        "build-all": "NODE_ENV=production lerna link && lerna run --parallel build",
+        "build-all": "NODE_ENV=production yarn install && lerna link && lerna run --parallel build",
         "now-build": "NODE_ENV=production lerna link && yarn workspace @githtml/util run now-build && yarn workspace @githtml/static run now-build"
     },
     "devDependencies": {
