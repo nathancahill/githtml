@@ -8,8 +8,12 @@ Syntax-highlighted HTML markup that matches GitHub 🖍✨
 
 #### `?ui=false`
 
-Return the HTML markup for the code without the GitHtml.com UI. Useful for embedding 📦
+Return the HTML markup for the code without the GitHtml UI. Useful for embedding 📦
 
 #### `?mode=dark`
 
 Dark mode 🌚
+
+## Credits
+
+http://githtml.com/nathancahill/githtml/blob/master/credits.md

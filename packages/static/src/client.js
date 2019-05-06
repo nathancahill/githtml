@@ -15,9 +15,9 @@ const languageP = Promise.all([fileP, contentP]).then(([file, content]) =>
 
 const renderedP = Promise.all([languageP, contentP]).then(
     ([language, content]) =>
-        getMarkdown(`\`\`\`${language.language}
+        getMarkdown(`\`\`\`\`\`\`\`\`\`\`\`\`${language.language}
 ${content}
-\`\`\``),
+\`\`\`\`\`\`\`\`\`\`\`\``),
 )
 
 renderedP.then(rendered => {

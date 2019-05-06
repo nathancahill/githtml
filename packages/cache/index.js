@@ -32,7 +32,7 @@ export default async (req, res) => {
         const file = bucket.file(query.path)
         const exists = await file.exists()
 
-        if (!exists) {
+        if (!exists[0]) {
             throw createError(404, 'Not Found')
         }
 
@@ -66,7 +66,7 @@ export default async (req, res) => {
     const file = bucket.file(obj.path)
     const exists = await file.exists()
 
-    if (exists) {
+    if (exists[0]) {
         return { sucess: true }
     }
 

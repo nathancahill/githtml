@@ -3,6 +3,7 @@ import 'isomorphic-fetch'
 import url from 'url'
 import preact from 'preact'
 import render from 'preact-render-to-string'
+import linkify from 'linkify-lite'
 
 import { getCache, postCache } from '@githtml/util/lib/cache'
 import { parseGithubUrl, getFile, getMarkdown } from '@githtml/util/lib/github'
@@ -35,23 +36,27 @@ export default async (req, res) => {
 
     const cached = await getCache(`${urlParts.repo}/${urlParts.blob}`)
 
+    const options = {
+        title: 'GitHtml',
+        bodyClass: query.mode === 'dark' ? 'bg-gray-800 text-gray-300' : '',
+        stylesheet:
+            query.mode === 'dark'
+                ? 'https://unpkg.com/github-syntax-dark@0.5.0/lib/github-dark.css'
+                : 'https://unpkg.com/github-syntax-light@0.5.0/lib/github-light.css',
+    }
+
     if (cached) {
         if (query.ui === 'false') {
             return cached
         }
 
         return authenticatedWrapper(
-            {
-                title: 'GitHtml',
-                stylesheet:
-                    query.mode === 'dark'
-                        ? 'https://unpkg.com/github-syntax-dark@0.5.0/lib/github-dark.css'
-                        : 'https://unpkg.com/github-syntax-light@0.5.0/lib/github-light.css',
-            },
+            options,
             render(
                 <div class="font-body">
-                    <Header />
+                    <Header mode={query.mode} />
                     <Code
+                        mode={query.mode}
                         dangerouslySetInnerHTML={{
                             __html: cached,
                         }}
@@ -67,16 +72,18 @@ export default async (req, res) => {
     if (!req.apikey) {
         return anonymousWrapper(
             {
-                title: 'GitHtml',
-                stylesheet:
-                    query.mode === 'dark'
-                        ? 'https://unpkg.com/github-syntax-dark@0.5.0/lib/github-dark.css'
-                        : 'https://unpkg.com/github-syntax-light@0.5.0/lib/github-light.css',
+                ...options,
+                urlParts: JSON.stringify({
+                    repo: urlParts.repo,
+                    branch: urlParts.branch,
+                    blob: urlParts.blob,
+                    filepath: urlParts.filepath,
+                }),
             },
             render(
                 <div class="font-body">
-                    <Header />
-                    <Code id="code" />
+                    <Header mode={query.mode} />
+                    <Code id="code" mode={query.mode} />
                 </div>,
             ),
         )
@@ -96,11 +103,17 @@ export default async (req, res) => {
     const language = await getLanguage(file.path, content)
 
     // format file with markdown api
-    const rendered = await getMarkdown(`\`\`\`${language.language}
+    const rendered = await getMarkdown(`\`\`\`\`\`\`\`\`\`\`\`\`${
+        language.language
+    }
 ${content}
-\`\`\``)
+\`\`\`\`\`\`\`\`\`\`\`\``)
 
-    const html = wrapLinesInCode(rendered)
+    let html = wrapLinesInCode(rendered)
+
+    if (query.links !== 'false') {
+        html = linkify(html)
+    }
 
     // save html to cache
     await postCache(`${urlParts.repo}/${urlParts.blob}`, html)
@@ -111,17 +124,12 @@ ${content}
 
     // return html
     return authenticatedWrapper(
-        {
-            title: 'GitHtml',
-            stylesheet:
-                query.mode === 'dark'
-                    ? 'https://unpkg.com/github-syntax-dark@0.5.0/lib/github-dark.css'
-                    : 'https://unpkg.com/github-syntax-light@0.5.0/lib/github-light.css',
-        },
+        options,
         render(
             <div class="font-body">
-                <Header />
+                <Header mode={query.mode} />
                 <Code
+                    mode={query.mode}
                     dangerouslySetInnerHTML={{
                         __html: html,
                     }}
