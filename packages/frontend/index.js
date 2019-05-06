@@ -34,8 +34,6 @@ export default async (req, res) => {
         urlParts = parseGithubUrl(NOT_A_BLOB)
     }
 
-    const cached = await getCache(`${urlParts.repo}/${urlParts.blob}`)
-
     const options = {
         title: 'GitHtml',
         bodyClass: query.mode === 'dark' ? 'bg-gray-800 text-gray-300' : '',
@@ -45,9 +43,15 @@ export default async (req, res) => {
                 : 'https://unpkg.com/github-syntax-light@0.5.0/lib/github-light.css',
     }
 
+    let cached = await getCache(`${urlParts.repo}/${urlParts.blob}`)
+
     if (cached) {
         if (query.ui === 'false') {
             return cached
+        }
+
+        if (query.links !== 'false') {
+            cached = linkify(cached)
         }
 
         return authenticatedWrapper(
@@ -111,12 +115,12 @@ ${content}
 
     let html = wrapLinesInCode(rendered)
 
+    // save html to cache
+    await postCache(`${urlParts.repo}/${urlParts.blob}`, html)
+
     if (query.links !== 'false') {
         html = linkify(html)
     }
-
-    // save html to cache
-    await postCache(`${urlParts.repo}/${urlParts.blob}`, html)
 
     if (query.ui === 'false') {
         return html

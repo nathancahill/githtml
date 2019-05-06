@@ -20,4 +20,4 @@ Disable automatically linkifying links in code 🔗
 
 ## Credits
 
-http://githtml.com/nathancahill/githtml/blob/master/credits.md
+https://githtml.com/nathancahill/githtml/blob/master/credits.md

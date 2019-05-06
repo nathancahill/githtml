@@ -1,3 +1,4 @@
+import linkify from 'linkify-lite'
 import { postCache } from '@githtml/util/lib/cache'
 import { getFile, getMarkdown } from '@githtml/util/lib/github'
 import { getLanguage } from '@githtml/util/lib/language'
@@ -21,8 +22,14 @@ ${content}
 )
 
 renderedP.then(rendered => {
-    const html = wrapLinesInCode(rendered)
-    document.querySelector('#code').innerHTML = html
-
+    let html = wrapLinesInCode(rendered)
     postCache(`${urlParts.repo}/${urlParts.blob}`, html)
+
+    const query = new URLSearchParams(document.location.search)
+
+    if (query.links !== 'false') {
+        html = linkify(html)
+    }
+
+    document.querySelector('#code').innerHTML = html
 })
