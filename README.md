@@ -14,6 +14,10 @@ Return the HTML markup for the code without the GitHtml UI. Useful for embedding
 
 Dark mode 🌚
 
+#### `?links=false`
+
+Disable automatically linkifying links in code 🔗
+
 ## Credits
 
 http://githtml.com/nathancahill/githtml/blob/master/credits.md
