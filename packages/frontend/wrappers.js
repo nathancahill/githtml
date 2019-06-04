@@ -13,6 +13,7 @@ ${meta(options)}
 </head>
 <body class="${options.bodyClass}">
 ${html}
+<script>var UPDATE_LIMITS = false;</script>
 <script type="text/javascript" src="/static/js/app.js"></script>
 </body>
 </html>
@@ -29,6 +30,7 @@ ${html}
 <script type="text/javascript">
 var urlParts = ${options.urlParts};
 </script>
+<script>var UPDATE_LIMITS = true;</script>
 <script type="text/javascript" src="/static/js/app.js"></script>
 <script type="text/javascript" src="/static/js/client.js"></script>
 </body>

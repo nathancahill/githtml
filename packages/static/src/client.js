@@ -6,22 +6,21 @@ import { wrapLinesInCode } from '@githtml/util'
 
 const fileP = getFile(urlParts.repo, urlParts.branch, urlParts.filepath)
 
-const contentP = fileP.then(file =>
+const contentP = fileP.then(([file, limits]) =>
     Buffer.from(file.content, 'base64').toString('utf8'),
 )
 
-const languageP = Promise.all([fileP, contentP]).then(([file, content]) =>
-    getLanguage(file.path, content),
+const languageP = Promise.all([fileP, contentP]).then(
+    ([[file, limits], content]) => getLanguage(file.path, content),
 )
 
 const renderedP = Promise.all([languageP, contentP]).then(
     ([language, content]) =>
         getMarkdown(`\`\`\`\`\`\`\`\`\`\`\`\`${language.language}
-${content}
-\`\`\`\`\`\`\`\`\`\`\`\``),
+${content}\`\`\`\`\`\`\`\`\`\`\`\``),
 )
 
-renderedP.then(rendered => {
+renderedP.then(([rendered, limits]) => {
     let html = wrapLinesInCode(rendered)
     postCache(`${urlParts.repo}/${urlParts.blob}`, html)
 
@@ -32,4 +31,7 @@ renderedP.then(rendered => {
     }
 
     document.querySelector('#code').innerHTML = html
+    document.querySelector('#ratelimit').innerHTML = `API calls remaining: ${
+        limits.remaining
+    }/${limits.limit}`
 })

@@ -9,9 +9,12 @@
     },
     "dependencies": {
         "@githtml/util": "1.0.0",
+        "@nowdb/client": "^1.0.1",
         "classnames": "^2.2.6",
+        "cookies": "^0.7.3",
         "linkify-lite": "^1.0.0",
         "preact": "^8.4.2",
-        "preact-render-to-string": "^4.1.0"
+        "preact-render-to-string": "^4.1.0",
+        "qs": "^6.7.0"
     }
 }

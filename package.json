@@ -11,6 +11,7 @@
         "now-build": "NODE_ENV=production yarn run build-all && yarn workspace @githtml/static run now-build"
     },
     "devDependencies": {
+        "@nowdb/cli": "^1.0.2",
         "clear-module": "^3.2.0",
         "lerna": "^3.13.4",
         "micro": "^9.3.4",

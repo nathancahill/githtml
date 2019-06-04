@@ -14,23 +14,33 @@ const Logo = props => (
     </svg>
 )
 
-export const Header = ({ mode }) => (
+export const Header = ({ mode, limits, pathname, authenticated }) => (
     <div
         class={classnames('p-2 flex justify-between items-start', {
             'border-gray-300': mode !== 'dark',
             'border-gray-900': mode === 'dark',
         })}
     >
-        <div class="flex items-center">
+        <a href="/" class="flex items-center">
             <Logo width="26px" class="mr-2 stroke-current fill-current" />
             <h1 class="text-2xl font-bold">GitHtml</h1>
-        </div>
-        <a
-            href="https://github.com/login/oauth/authorize?client_id=b3c844bcc2e22d84e561"
-            class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded text-sm"
-        >
-            Sign In with GitHub
         </a>
+        <div class="flex items-center">
+            <div
+                class="flex-1 text-right mr-2 text-sm font-semibold text-gray-800"
+                id="ratelimit"
+            >
+                <span class="text-gray-600">API calls remaining:</span> {limits.remaining}/{limits.limit}
+            </div>
+            {!authenticated && (
+                <a
+                    href={`https://github.com/login/oauth/authorize?client_id=b3c844bcc2e22d84e561&redirect_uri=https://githtml.com${pathname}`}
+                    class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded text-sm"
+                >
+                    Sign In with GitHub
+                </a>
+            )}
+        </div>
     </div>
 )
 

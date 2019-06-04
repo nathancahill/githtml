@@ -38,6 +38,7 @@
         }
     ],
     "env": {
-        "ENCRYPT_KEY": "@githtml-encrypt-key"
+        "ENCRYPT_KEY": "@githtml-encrypt-key",
+        "NOWDB_KEY": "@nowdb-key-35a22bf9e417"
     }
 }
