@@ -18,4 +18,10 @@ export const postCache = (path, content) =>
             path,
             content,
         }),
-    }).then(res => res.json())
+    }).then(res => {
+        if (!res.ok) {
+            throw Error('Failed to post to cache')
+        }
+
+        return res.json()
+    })

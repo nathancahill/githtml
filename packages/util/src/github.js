@@ -16,7 +16,13 @@ export const getFile = (repo, branch, path, token = null) => {
         { headers }
     )
 
-    const jsonP = fileP.then(res => res.json())
+    const jsonP = fileP.then(res => {
+        if (!res.ok) {
+            return Promise.resolve(null)
+        }
+
+        return res.json()
+    })
     const headersP = fileP.then(res => ({
         limit: res.headers.get('X-RateLimit-Limit'),
         remaining: res.headers.get('X-RateLimit-Remaining'),

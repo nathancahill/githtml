@@ -18,9 +18,69 @@ import { authenticatedWrapper, anonymousWrapper } from './wrappers'
 import { Header, Code } from './ui'
 
 const README = '/nathancahill/githtml/blob/master/README.md'
-const NOT_A_BLOB = '/nathancahill/githtml/blob/master/NOT_A_BLOB.md'
+const NOT_A_BLOB = '/nathancahill/githtml/blob/master/404.md'
 
 const nowdb = new NowDB()
+
+const fromCache = async (pathname, query, res, cached, options, token) => {
+    if (query.embed === 'true') {
+        res.setHeader('content-type', 'text/javascript; charset=utf-8')
+
+        let script = `document.write(${JSON.stringify(cached)});`
+
+        if (query.stylesheet === 'true') {
+            script = `document.write('<link rel="stylesheet" href="${options.stylesheet}">');
+${script}`
+        }
+
+        if (query.lineno === 'true') {
+            const lineno = 'https://githtml.com/static/css/embed.css'
+            script = `document.write('<link rel="stylesheet" href="${lineno}">');
+${script}`
+        }
+
+        return script
+    }
+
+    if (query.ui === 'false') {
+        return cached
+    }
+
+    if (query.links !== 'false') {
+        cached = linkify(cached)
+    }
+
+    if (token !== null) {
+        const rateLimitRes = await fetch('https://api.github.com/rate_limit', {
+            headers: {
+                authorization: `token ${token}`,
+            }
+        })
+
+        const rateLimit = await rateLimitRes.json()
+        options.limits = rateLimit.rate
+    }
+
+    return authenticatedWrapper(
+        options,
+        render(
+            <div class="font-body">
+                <Header
+                    mode={query.mode}
+                    limits={options.limits}
+                    pathname={pathname}
+                    authenticated={!!token}
+                />
+                <Code
+                    mode={query.mode}
+                    dangerouslySetInnerHTML={{
+                        __html: cached,
+                    }}
+                />
+            </div>,
+        ),
+    )
+}
 
 export default async (req, res) => {
     const cookies = new Cookies(req, res)
@@ -87,6 +147,8 @@ export default async (req, res) => {
         urlParts = parseGithubUrl(NOT_A_BLOB)
     }
 
+    const [ref, ...parts] = urlParts.blob.split('/')
+
     const options = {
         title: 'GitHtml',
         bodyClass: query.mode === 'dark' ? 'bg-gray-800 text-gray-300' : '',
@@ -100,63 +162,7 @@ export default async (req, res) => {
     let cached = await getCache(`${urlParts.repo}/${urlParts.blob}`)
 
     if (cached && query.cache !== 'false') {
-        if (query.embed === 'true') {
-            res.setHeader('content-type', 'text/javascript; charset=utf-8')
-
-            let script = `document.write(${JSON.stringify(cached)});`
-
-            if (query.stylesheet === 'true') {
-                script = `document.write('<link rel="stylesheet" href="${options.stylesheet}">');
-${script}`
-            }
-
-            if (query.lineno === 'true') {
-                const lineno = 'https://githtml.com/static/css/embed.css'
-                script = `document.write('<link rel="stylesheet" href="${lineno}">');
-${script}`
-            }
-
-            return script
-        }
-
-        if (query.ui === 'false') {
-            return cached
-        }
-
-        if (query.links !== 'false') {
-            cached = linkify(cached)
-        }
-
-        if (token !== null) {
-            const rateLimitRes = await fetch('https://api.github.com/rate_limit', {
-                headers: {
-                    authorization: `token ${token}`,
-                }
-            })
-
-            const rateLimit = await rateLimitRes.json()
-            options.limits = rateLimit.rate
-        }
-
-        return authenticatedWrapper(
-            options,
-            render(
-                <div class="font-body">
-                    <Header
-                        mode={query.mode}
-                        limits={options.limits}
-                        pathname={pathname}
-                        authenticated={!!token}
-                    />
-                    <Code
-                        mode={query.mode}
-                        dangerouslySetInnerHTML={{
-                            __html: cached,
-                        }}
-                    />
-                </div>,
-            ),
-        )
+        return fromCache(pathname, query, res, cached, options, token)
     }
 
     // check for api key
@@ -196,11 +202,16 @@ ${script}`
     // get file contents
     const [file, fileLimits] = await getFile(
         urlParts.repo,
-        urlParts.branch,
-        urlParts.filepath,
+        ref,
+        parts.join('/'),
         token,
     )
-    options.limits = fileLimits
+
+    if (file === null) {
+        urlParts = parseGithubUrl(NOT_A_BLOB)
+        cached = await getCache(`${urlParts.repo}/${urlParts.blob}`)
+        return fromCache(NOT_A_BLOB, query, res, cached, options, token)
+    }
 
     // get file language
     const content = Buffer.from(file.content, 'base64').toString('utf8')
@@ -218,7 +229,9 @@ ${content}\`\`\`\`\`\`\`\`\`\`\`\``,
     let html = wrapLinesInCode(rendered)
 
     // save html to cache
-    await postCache(`${urlParts.repo}/${urlParts.blob}`, html)
+    try {
+        await postCache(`${urlParts.repo}/${urlParts.blob}`, html)
+    } catch (e) {}
 
     if (query.links !== 'false') {
         html = linkify(html)
