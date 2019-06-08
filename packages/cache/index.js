@@ -64,11 +64,6 @@ export default async (req, res) => {
     }
 
     const file = bucket.file(obj.path)
-    const exists = await file.exists()
-
-    if (exists[0]) {
-        return { sucess: true }
-    }
 
     try {
         await new Promise((resolve, reject) => {

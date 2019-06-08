@@ -47,4 +47,18 @@ export default [
         },
         plugins,
     },
+    {
+        input: './src/embed.js',
+        output: {
+            file: '../../public/static/js/embed.js',
+            format: 'iife',
+            sourcemap: !PROD,
+        },
+        plugins: [
+            postcss({
+                extensions: ['.css'],
+                extract: '../../public/static/css/embed.css',
+            }),
+        ],
+    },
 ]

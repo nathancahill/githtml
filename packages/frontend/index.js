@@ -64,7 +64,7 @@ export default async (req, res) => {
         return
     }
 
-    const apikey = query.key || cookies.get('ApiKey')
+    const apikey = cookies.get('ApiKey')
     let token = null
 
     if (apikey) {
@@ -99,7 +99,26 @@ export default async (req, res) => {
 
     let cached = await getCache(`${urlParts.repo}/${urlParts.blob}`)
 
-    if (cached) {
+    if (cached && query.cache !== 'false') {
+        if (query.embed === 'true') {
+            res.setHeader('content-type', 'text/javascript; charset=utf-8')
+
+            let script = `document.write(${JSON.stringify(cached)});`
+
+            if (query.stylesheet === 'true') {
+                script = `document.write('<link rel="stylesheet" href="${options.stylesheet}">');
+${script}`
+            }
+
+            if (query.lineno === 'true') {
+                const lineno = 'https://githtml.com/static/css/embed.css'
+                script = `document.write('<link rel="stylesheet" href="${lineno}">');
+${script}`
+            }
+
+            return script
+        }
+
         if (query.ui === 'false') {
             return cached
         }

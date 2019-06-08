@@ -2,3 +2,4 @@
 node_modules/
 packages/util/lib/
 public/static/js/
+public/static/css/
